@@ -1,1 +1,1 @@
-# eslint-plugin-vars-name
+# eslint-plugin-use-design-token
