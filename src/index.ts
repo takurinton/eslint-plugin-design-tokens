@@ -8,7 +8,7 @@ export = {
     all: {
       plugins: ["design-tokens"],
       rules: {
-        "vars-name/use-design-token": "error",
+        "design-tokens/use-design-token": "error",
       },
     },
   },
