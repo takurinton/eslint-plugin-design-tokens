@@ -22,6 +22,11 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
       filename: "Component.tsx",
       code: "<Button paddingTop={theme.padding.top} />",
     },
+    // 絶対パス
+    {
+      filename: `${process.cwd()}/src/Component.tsx`,
+      code: "<Button paddingTop={theme.padding.top} />",
+    },
     {
       // styled-system に存在しないプロパティは無視する
       filename: "Component.tsx",

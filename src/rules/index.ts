@@ -4,6 +4,7 @@ import * as styledSystem from "styled-system";
 import ignore from "ignore";
 import { MessageId } from "./types";
 import { messages } from "./messages";
+import path from "path";
 
 type Options = Array<{
   ignoreFilenames?: string[];
@@ -47,10 +48,17 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
   },
   defaultOptions: [],
   create(context) {
-    const { filename, options } = context;
+    const { filename: _filename, options, getFilename } = context;
     const ignoreFilenames = options[0]?.ignoreFilenames ?? [];
+    const basePath = process.cwd();
+    /**
+     * typescript-eslint のバージョン違いで filename が取得できない場合があるので
+     * getFilename でも取得する
+     */
+    const filename = _filename ?? getFilename();
+    const file = path.relative(basePath, filename);
     const ig = ignore().add(ignoreFilenames);
-    if (ig.ignores(filename)) {
+    if (ig.ignores(file)) {
       return {};
     }
 
