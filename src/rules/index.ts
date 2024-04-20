@@ -8,6 +8,7 @@ import path from "path";
 
 type Options = Array<{
   ignoreFilenames?: string[];
+  ignoreKeys?: string[];
 }>;
 
 const styledSystemKeys = Object.keys(styledSystem);
@@ -35,6 +36,12 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
         type: "object",
         properties: {
           ignoreFilenames: {
+            type: "array",
+            items: {
+              type: "string",
+            },
+          },
+          ignoreKeys: {
             type: "array",
             items: {
               type: "string",
@@ -68,11 +75,18 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
           if (attribute.type === "JSXAttribute") {
             const value = attribute.value;
             const key = attribute.name.name;
-            if (propNames.includes(key) && value?.type === "Literal") {
-              context.report({
-                node: value,
-                messageId: "use_design_token",
-              });
+            if (value?.type === "Literal") {
+              const ignoreKeys = options[0]?.ignoreKeys ?? [];
+              const ig = ignore().add(ignoreKeys);
+              if (typeof key === "string" && ig.ignores(key)) {
+                return;
+              }
+              if (propNames.includes(key)) {
+                context.report({
+                  node: value,
+                  messageId: "use_design_token",
+                });
+              }
             }
 
             if (value && value.type === "JSXExpressionContainer") {

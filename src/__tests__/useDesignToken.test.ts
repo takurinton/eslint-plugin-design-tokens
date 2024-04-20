@@ -42,6 +42,11 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
       code: '<FooIcon paddingTop="8px" />',
       options: [{ ignoreFilenames: ["*.stoires.tsx", "*Icon.tsx"] }],
     },
+    {
+      filename: "Component.tsx",
+      code: '<Box justifyContent="flex-start" alignItems="center" />',
+      options: [{ ignoreKeys: ["justifyContent", "alignItems"] }],
+    },
   ],
   invalid: [
     {
