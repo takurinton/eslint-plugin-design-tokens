@@ -47,6 +47,11 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
       code: '<Box justifyContent="flex-start" alignItems="center" />',
       options: [{ ignoreKeys: ["justifyContent", "alignItems"] }],
     },
+    {
+      filename: "Component.tsx",
+      code: '<Box justifyContent="flex-start" alignItems="center" textOverflow="ellipsis" flexDirection="column" alignItems="flex-start" justifyContent="flex-start" />',
+      options: [{ onlyCheckDefaultTheme: true }],
+    },
   ],
   invalid: [
     {

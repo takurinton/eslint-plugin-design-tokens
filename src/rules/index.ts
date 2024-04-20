@@ -9,16 +9,44 @@ import path from "path";
 type Options = Array<{
   ignoreFilenames?: string[];
   ignoreKeys?: string[];
+  onlyCheckDefaultTheme?: boolean;
 }>;
 
+const defaultThemePropKeys = [
+  "margin",
+  "padding",
+  "space",
+  "zIndex",
+  "top",
+  "right",
+  "bottom",
+  "left",
+  "typography",
+  "background",
+  "borderRadius",
+  "sizes",
+  "fontSizes",
+  "colors",
+  "fontWeights",
+];
 const styledSystemKeys = Object.keys(styledSystem);
-// 省略記法は使わなくてもいいかなと思いつつ、一旦全て取得しておく
-const propNames = styledSystemKeys
-  .map((key) => {
-    return styledSystem[key].propNames;
-  })
-  .filter((propNames) => propNames !== undefined)
-  .flat();
+let propNames: string[] | undefined;
+
+const getPropNames = (onlyCheckDefaultTheme: boolean): string[] => {
+  propNames = styledSystemKeys
+    .map((key) => {
+      if (onlyCheckDefaultTheme) {
+        return defaultThemePropKeys.includes(key)
+          ? styledSystem[key].propNames
+          : undefined;
+      }
+      return styledSystem[key].propNames;
+    })
+    .filter((propNames) => propNames !== undefined)
+    .flat();
+
+  return propNames;
+};
 
 /**
  * デザイントークンを使ってください！
@@ -47,6 +75,9 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
               type: "string",
             },
           },
+          onlyCheckDefaultTheme: {
+            type: "boolean",
+          },
         },
         additionalProperties: false,
       },
@@ -69,6 +100,9 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
       return {};
     }
 
+    const onlyCheckDefaultTheme = options[0]?.onlyCheckDefaultTheme ?? false;
+    const propNames = getPropNames(onlyCheckDefaultTheme);
+
     return {
       JSXOpeningElement(node) {
         node.attributes.forEach((attribute) => {
@@ -81,7 +115,7 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
               if (typeof key === "string" && ig.ignores(key)) {
                 return;
               }
-              if (propNames.includes(key)) {
+              if (typeof key === "string" && propNames.includes(key)) {
                 context.report({
                   node: value,
                   messageId: "use_design_token",
