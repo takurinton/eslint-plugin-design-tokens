@@ -14,7 +14,7 @@ module.exports = {
   rules: {
     semi: ["error", "always"],
     "no-extra-semi": "error",
-    quotes: ["error", "double"],
+    quotes: "off",
     "space-before-blocks": ["error", { functions: "always" }],
     "no-undef": ["off"],
   },
