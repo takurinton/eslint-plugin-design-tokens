@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "styled-system": "5.1.5",
     "@types/eslint": "8.56.2",
     "@types/node": "20.11.16",
     "@typescript-eslint/eslint-plugin": "6.20.0",
@@ -13,10 +12,11 @@
     "vitest": "1.2.2"
   },
   "dependencies": {
-    "ignore": "^5.3.1"
+    "ignore": "^5.3.1",
+    "styled-system": "^5.1.5"
   },
   "name": "@takurinton/eslint-plugin-design-tokens",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "files": [
     "dist",
