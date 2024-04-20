@@ -16,7 +16,6 @@ const defaultThemePropKeys = [
   "margin",
   "padding",
   "space",
-  "shadow",
   "zIndex",
   "top",
   "right",

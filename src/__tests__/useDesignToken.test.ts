@@ -49,7 +49,7 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
     },
     {
       filename: "Component.tsx",
-      code: '<Box justifyContent="flex-start" alignItems="center" />',
+      code: '<Box justifyContent="flex-start" alignItems="center" textOverflow="ellipsis" />',
       options: [{ onlyCheckDefaultTheme: true }],
     },
   ],
