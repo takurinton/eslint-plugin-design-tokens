@@ -11,6 +11,9 @@
     "typescript": "5.3.3",
     "vitest": "1.2.2"
   },
+  "dependencies": {
+    "ignore": "^5.3.1"
+  },
   "name": "@takurinton/eslint-plugin-design-tokens",
   "version": "0.0.1",
   "main": "dist/index.js",

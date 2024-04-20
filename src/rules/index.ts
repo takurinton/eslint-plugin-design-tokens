@@ -1,11 +1,16 @@
 import { TSESLint } from "@typescript-eslint/utils";
+import ignore from "ignore";
 import { MessageId } from "./types";
 import { messages } from "./messages";
+
+type Options = Array<{
+  ignoreFilenames?: string[];
+}>;
 
 /**
  * デザイントークンを使ってください！
  */
-export const useDesignToken: TSESLint.RuleModule<MessageId, []> = {
+export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
   meta: {
     type: "problem",
     docs: {
@@ -13,17 +18,31 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, []> = {
       recommended: "recommended",
       url: "",
     },
-    schema: [],
+    schema: [
+      {
+        type: "object",
+        properties: {
+          ignoreFilenames: {
+            type: "array",
+            items: {
+              type: "string",
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages,
   },
   defaultOptions: [],
   create(context) {
-    const { filename } = context;
-    const isTSX = filename.endsWith(".tsx");
-    // .ts を除外するかどうかは要検討
-    if (!isTSX) {
+    const { filename, options } = context;
+    const ignoreFilenames = options[0]?.ignoreFilenames ?? [];
+    const ig = ignore().add(ignoreFilenames);
+    if (ig.ignores(filename)) {
       return {};
     }
+
     return {
       JSXOpeningElement(node) {
         node.attributes.forEach((attribute) => {

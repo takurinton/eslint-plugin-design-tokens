@@ -22,6 +22,18 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
       filename: "Component.tsx",
       code: "<Button paddingTop={theme.padding.top} />",
     },
+    {
+      filename: "Component.stoires.tsx",
+      // eslint-disable-next-line quotes
+      code: '<Button paddingTop="8px" />',
+      options: [{ ignoreFilenames: ["*.stoires.tsx"] }],
+    },
+    {
+      filename: "FooIcon.tsx",
+      // eslint-disable-next-line quotes
+      code: '<FooIcon paddingTop="8px" />',
+      options: [{ ignoreFilenames: ["*.stoires.tsx", "*Icon.tsx"] }],
+    },
   ],
   invalid: [
     {
