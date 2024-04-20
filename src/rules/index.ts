@@ -24,6 +24,10 @@ const defaultThemePropKeys = [
   "typography",
   "background",
   "borderRadius",
+  "sizes",
+  "fontSizes",
+  "colors",
+  "fontWeights",
 ];
 const styledSystemKeys = Object.keys(styledSystem);
 let propNames: string[] | undefined;
