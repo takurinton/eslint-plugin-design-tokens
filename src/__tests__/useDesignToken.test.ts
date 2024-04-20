@@ -23,6 +23,11 @@ ruleTester.run("vars-name/use-design-token", useDesignToken, {
       code: "<Button paddingTop={theme.padding.top} />",
     },
     {
+      // styled-system に存在しないプロパティは無視する
+      filename: "Component.tsx",
+      code: '<Button foo="bar" />',
+    },
+    {
       filename: "Component.stoires.tsx",
       code: '<Button paddingTop="8px" />',
       options: [{ ignoreFilenames: ["*.stoires.tsx"] }],
