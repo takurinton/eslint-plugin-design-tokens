@@ -1,16 +1,9 @@
 import { TSESLint } from "@typescript-eslint/utils";
-// @ts-expect-error
-import * as styledSystem from "styled-system";
+import styledSystem, { get, margin } from "styled-system";
 import ignore from "ignore";
-import { MessageId } from "./types";
-import { messages } from "./messages";
 import path from "path";
-
-type Options = Array<{
-  ignoreFilenames?: string[];
-  ignoreKeys?: string[];
-  onlyCheckDefaultTheme?: boolean;
-}>;
+import { MessageId, Options } from "./types";
+import { messages } from "./messages";
 
 const defaultThemePropKeys = [
   "margin",
@@ -29,24 +22,31 @@ const defaultThemePropKeys = [
   "colors",
   "fontWeights",
 ];
-const styledSystemKeys = Object.keys(styledSystem);
-let propNames: string[] | undefined;
 
-const getPropNames = (onlyCheckDefaultTheme: boolean): string[] => {
-  propNames = styledSystemKeys
+type PropertyKeys = keyof Omit<
+  typeof styledSystem,
+  | "get"
+  | "compose"
+  | "system"
+  | "style"
+  | "createParser"
+  | "createStyleFunction"
+  | "variant"
+  | "getPx"
+  | "styles"
+>;
+const styledSystemKeys = Object.keys(styledSystem) as PropertyKeys[];
+
+const getPropNames = (onlyCheckDefaultTheme: boolean): (string | undefined)[] =>
+  styledSystemKeys
     .map((key) => {
-      if (onlyCheckDefaultTheme) {
-        return defaultThemePropKeys.includes(key)
-          ? styledSystem[key].propNames
-          : undefined;
+      if (onlyCheckDefaultTheme && !defaultThemePropKeys.includes(key)) {
+        return undefined;
       }
       return styledSystem[key].propNames;
     })
     .filter((propNames) => propNames !== undefined)
     .flat();
-
-  return propNames;
-};
 
 /**
  * デザイントークンを使ってください！

@@ -1,1 +1,1 @@
-# eslint-plugin-use-design-token
+# eslint-plugin-esign-tokens

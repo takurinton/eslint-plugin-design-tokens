@@ -16,7 +16,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run("vars-name/use-design-token", useDesignToken, {
+ruleTester.run("design-token/use-design-token", useDesignToken, {
   valid: [
     {
       filename: "Component.tsx",
