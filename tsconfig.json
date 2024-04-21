@@ -11,5 +11,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["playground", "node_modules", "vitest.config.ts"]
+  "exclude": ["node_modules", "vitest.config.ts"]
 }
