@@ -23,6 +23,21 @@ const defaultThemePropKeys = [
   "fontWeights",
 ];
 
+const initialValues = [
+  // 初期値に戻す
+  "initial",
+  "inherit",
+  "unset",
+  "revert",
+  "auto",
+  "revert",
+  "revert-layer",
+  "all",
+
+  // 透明
+  "transparent",
+];
+
 type PropertyKeys = keyof Omit<
   typeof styledSystem,
   | "get"
@@ -108,6 +123,7 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
         node.attributes.forEach((attribute) => {
           if (attribute.type === "JSXAttribute") {
             const value = attribute.value;
+
             const key = attribute.name.name;
             if (value?.type === "Literal") {
               const ignoreKeys = options[0]?.ignoreKeys ?? [];
@@ -115,6 +131,14 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
               if (typeof key === "string" && ig.ignores(key)) {
                 return;
               }
+
+              if (
+                typeof value.value === "string" &&
+                initialValues.includes(value.value)
+              ) {
+                return;
+              }
+
               if (typeof key === "string" && propNames.includes(key)) {
                 context.report({
                   node: value,
@@ -131,6 +155,9 @@ export const useDesignToken: TSESLint.RuleModule<MessageId, Options> = {
                 expression.object.object.type === "Identifier"
               ) {
                 const variableName = expression.object.object.name;
+                if (initialValues.includes(variableName)) {
+                  return;
+                }
                 if (!variableName.startsWith("theme")) {
                   context.report({
                     node: expression,

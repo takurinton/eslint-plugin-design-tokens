@@ -52,6 +52,21 @@ ruleTester.run("design-token/use-design-token", useDesignToken, {
       code: '<Box justifyContent="flex-start" alignItems="center" textOverflow="ellipsis" flexDirection="column" alignItems="flex-start" justifyContent="flex-start" />',
       options: [{ onlyCheckDefaultTheme: true }],
     },
+    {
+      filename: "Component.tsx",
+      code: '<Box background="transparent" />',
+      options: [{ onlyCheckDefaultTheme: true }],
+    },
+    {
+      filename: "Component.tsx",
+      code: '<Box background="inherit" />',
+      options: [{ onlyCheckDefaultTheme: true }],
+    },
+    {
+      filename: "Component.tsx",
+      code: '<Box background="unset" />',
+      options: [{ onlyCheckDefaultTheme: true }],
+    },
   ],
   invalid: [
     {
